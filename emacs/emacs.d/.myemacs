@@ -1,0 +1,203 @@
+(add-to-list 'load-path "~/conf/emacs/emacs.d/plugin")
+(add-to-list 'load-path "~/conf/emacs/emacs.d/")
+
+; -----------------------------------------------------------------------------
+; Appearance
+; -----------------------------------------------------------------------------
+
+; Change coloration of emacs(need color-theme)
+(require 'color-theme)
+(require 'bichu-color-theme)
+(bichu-color-theme)
+
+; Minimal interface
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+(blink-cursor-mode -1)
+
+;Line number on left
+(require 'linum)
+(global-linum-mode)
+
+; Highlight the current line; set a custom face, so we can
+; recognize from the normal marking (selection)
+(defface hl-line '((t (:background "#3a3a3a")))
+  "Face to use for `hl-line-face'." :group 'hl-line)
+(setq hl-line-face 'hl-line)
+; Turn it on for all modes by default
+(global-hl-line-mode t)
+
+; Display time
+(display-time)
+(setq display-time-24hr-format t)
+; Display column number
+(column-number-mode t)
+; Display line number
+(line-number-mode t)
+; Enable syntaxic highlighting
+(global-font-lock-mode t)
+
+; -----------------------------------------------------------------------------
+; General usefull options
+; -----------------------------------------------------------------------------
+
+; Turn the alarm totally off
+(setq ring-bell-function 'ignore)
+  ; (setq visible-bell t)
+; Skip message a startup
+(setq inhibit-startup-message t)
+; Limit number columns to 80
+(set-fill-column 79)
+; Empty scratch buffer
+(setq initial-scratch-message nil)
+; Type 'y or n' instead of 'yes or no'
+(fset 'yes-or-no-p 'y-or-n-p)
+
+; Default emacs mode
+(setq default-major-mode'text-mode)
+(add-hook 'text-mode-hook'turn-on-auto-fill)
+; Mouse affect buffer
+(setq mouse-wheel-follow-mouse t)
+; Stop at the end of the file, not just add lines
+(setq next-line-add-newlines nil)
+; Allow mark to be put with 2 levels
+(transient-mark-mode nil)
+
+; Sexy gdb mode
+(setq-default gdb-many-windows t)
+
+; -----------------------------------------------------------------------------
+; White-space
+; -----------------------------------------------------------------------------
+
+; Highlight trailing whitespace
+(setq show-trailing-whitespace t)
+(setq-default show-trailing-whitespace t)
+; Delete white space when you save
+(global-set-key (kbd "<f9>") 'delete-trailing-whitespace)
+; (add-hook 'write-file-hooks'delete-trailing-whitespace)
+
+; -----------------------------------------------------------------------------
+; Identation mode
+; -----------------------------------------------------------------------------
+
+; Set the tab width
+; indentation par pas de 2 espaces
+(setq-default c-basic-offset 2
+	      tab-width 8
+	      indent-tabs-mode t)
+
+; N'indente pas les accolades pour les fonctions les cases et les structs
+(c-set-offset 'substatement-open '0)
+(c-set-offset 'brace-list-open '0)
+(c-set-offset 'statement-case-open '0)
+
+; -----------------------------------------------------------------------------
+; Browsing files (lusty explorer/io-mode(older))
+; -----------------------------------------------------------------------------
+(when (require 'lusty-explorer nil 'noerror)
+
+; Overrride the normal file-opening, buffer switching
+(global-set-key (kbd "C-x C-f") 'lusty-file-explorer)
+(global-set-key (kbd "C-x b")   'lusty-buffer-explorer))
+
+; Enable ido mode
+; (ido-mode t)
+; Aviod search in all hard disk
+; (setq ido-auto-merge-work-directories-length -1)
+
+; -----------------------------------------------------------------------------
+; Binding
+; -----------------------------------------------------------------------------
+
+; modification of comportement for key DEL
+(global-set-key [delete] [deletechar])
+
+; change buffer with M-arrow
+; bindings to move between windows
+
+(global-set-key [M-left] 'windmove-left)
+(global-set-key [M-right] 'windmove-right)
+(global-set-key [M-up] 'windmove-up)
+(global-set-key [M-down] 'windmove-down)
+
+
+; Configure compilation in Emacs
+
+; Scroll compilation buffer to follow compilation
+(setq compilation-scroll-output t)
+; Bind recompile to C-c c
+(global-set-key [(control c) (c)] 'recompile)
+; Bind next-error to C-c e
+(global-set-key [(control c) (e)] 'next-error)
+
+; -----------------------------------------------------------------------------
+; Parenthesis option
+; -----------------------------------------------------------------------------
+
+(require 'autopair)
+; Enable autopair in all buffers
+(autopair-global-mode)
+; Show matching parentheses
+(require 'paren)
+(show-paren-mode)
+(set-face-background 'show-paren-match-face (face-background 'default))
+(set-face-foreground 'show-paren-match-face "#fb7983")
+(set-face-attribute 'show-paren-match-face nil :weight 'extra-bold)
+
+; -----------------------------------------------------------------------------
+; Tuareg mode
+; -----------------------------------------------------------------------------
+
+; Find files in good repertory
+(setq load-path (cons (expand-file-name "~/.emacs.d/tuareg-mode")
+		                  load-path))
+
+; Append-tuareg.el - Tuareg quick installation: Append this file to .emacs.
+
+(setq auto-mode-alist (cons '("\\.ml\\w?" . tuareg-mode) auto-mode-alist))
+(autoload 'tuareg-mode "tuareg" "Major mode for editing Caml code" t)
+(autoload 'camldebug "camldebug" "Run the Caml debugger" t)
+
+(if (and (boundp 'window-system) window-system)
+    (when (string-match "XEmacs" emacs-version)
+      (if (not (and (boundp 'mule-x-win-initted) mule-x-win-initted))
+            (require 'sym-lock))
+      (require 'font-lock)))
+
+; Tuareg configuration
+(add-hook 'tuareg-mode-hook
+	    '(lambda ()
+	            (auto-fill-mode 1)
+		    ; turn on auto-fill minor mode
+		    ; (passage a la ligne automatique)
+			(setq tuareg-sym-lock-keywords nil)
+			; ne pas remplacer les mots cles par des symboles
+			 ))
+
+; -----------------------------------------------------------------------------
+; Tiger mode
+; -----------------------------------------------------------------------------
+
+; (require 'tiger)
+(autoload 'tiger-mode "tiger" "Load tiger-mode" t)
+(add-to-list 'auto-mode-alist '("\\.ti[gh]$" . tiger-mode))
+
+; -----------------------------------------------------------------------------
+; Comment boxes
+; -----------------------------------------------------------------------------
+
+(add-hook 'c-mode-hook 'fp-c-mode-routine)
+(defun fp-c-mode-routine ()
+  (local-set-key "\M-q" 'rebox-comment))
+(autoload 'rebox-comment "rebox" nil t)
+(autoload 'rebox-region "rebox" nil t)
+
+
+; -----------------------------------------------------------------------------
+; C
+; -----------------------------------------------------------------------------
+
+; (if (file-exists-p "~/conf/emacs.d/c-config-file")
+;     (load-file "~/conf/emacs.d/c-config-file"))
