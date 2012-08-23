@@ -26,7 +26,7 @@ if has("gui_running")
     colorscheme spring	" set colorscheme
 else " terminal configuration
     set t_Co=16		" Use 16 colors
-    colorscheme spring
+    colorscheme desert
 endif
 " Show the cursor position
 set ruler

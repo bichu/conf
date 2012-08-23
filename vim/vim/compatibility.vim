@@ -19,15 +19,4 @@ filetype indent on
 " Allow backspace over everything in insert mode
 set backspace=2
 " In the case we are using evim, do not load configuration
-if v:progname =~? "evim"
-    finish
-endif
-" If we are using VMS version of vim, do not create back-ups
-if has("vms")
-    set nobackup
-else
-    set backup
-endif
-
-
 "}}}

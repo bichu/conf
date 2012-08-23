@@ -151,9 +151,9 @@ setprompt () {
 # $lpurple$PR_SHIFT_IN$PR_HBAR$PR_SHIFT_OUT\
 # $lred  '
     PROMPT="$yellow%D{%H:%M}$white - Logged as $lgreen$USER$white on $red$HOST$white $lpurple%~$white
-$red%?$white$lblue 42sh> $white"
+$red%?$white$lblue > $white"
 
-    RPROMPT="$lpurple($lyellow%D{%a,%b%d}$lpurple)$white"
+    RPROMPT="$lpurple($lyellow%D{%a%d %b}$lpurple)$white"
 
     PS2='$lpurple$PR_SHIFT_IN$PR_HBAR$PR_SHIFT_OUT\
 $lblue$PR_SHIFT_IN$PR_HBAR$PR_SHIFT_OUT(\

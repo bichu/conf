@@ -75,7 +75,7 @@
 (setq show-trailing-whitespace t)
 (setq-default show-trailing-whitespace t)
 ; Delete white space when you save
-(global-set-key (kbd "<f9>") 'delete-trailing-whitespace)
+(global-set-key (kbd "<f6>") 'delete-trailing-whitespace)
 ; (add-hook 'write-file-hooks'delete-trailing-whitespace)
 
 ; -----------------------------------------------------------------------------
