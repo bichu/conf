@@ -136,20 +136,6 @@ setprompt () {
 
     ###
     # Finally, the prompt.
-
-#     PROMPT='$PR_SET_CHARSET$PR_STITLE${(e)PR_TITLEBAR}\
-# $lpurple$PR_SHIFT_IN$PR_ULCORNER$yellow$PR_HBAR$PR_SHIFT_OUT(\
-# $lred%(!.%SROOT%s. $USER )$blue@ %m:%l\
-# $lyellow)$lblue($lpurple\
-# %$PR_PWDLEN<...<%~%<<\
-# $lblue)$PR_SHIFT_IN$PR_HBAR$lred$PR_HBAR${(e)PR_FILLBAR}$lblue$PR_HBAR$PR_SHIFT_OUT$PR_SHIFT_IN$PR_HBAR$lblue$PR_URCORNER$PR_SHIFT_OUT\
-# 
-# $lred$PR_SHIFT_IN$PR_LLCORNER$lyellow$PR_HBAR$PR_SHIFT_OUT(\
-# %(?..$lyellow%?$lblue:)\
-# ${(e)PR_APM}$lblue%D{%H:%M}\
-# $lpurple:%(!.$lred.$white)%#$lyellow)$PR_SHIFT_IN$PR_HBAR$PR_SHIFT_OUT\
-# $lpurple$PR_SHIFT_IN$PR_HBAR$PR_SHIFT_OUT\
-# $lred  '
     PROMPT="$yellow%D{%H:%M}$white - Logged as $lgreen$USER$white on $red$HOST$white $lpurple%~$white
 $red%?$white$lblue > $white"
 
@@ -181,7 +167,7 @@ show-man ()
 my-accept-line ()
 {
 
-    targets="eclipse emacs firefox xpdf thunderbird konqueror k gwenview koshell inkscape amule"
+    targets="eclipse vim emacs firefox xpdf evince thunderbird"
     # FIXME: Do not disown in text mode!
     if ! (echo "$BUFFER" | grep -q '&!$'); then
         for p in $targets; do
@@ -204,31 +190,17 @@ bindkey "" my-accept-line
 autoload -U compinit
 compinit
 
-# FUNCTIONS
-
-mkcd ()
-{
-    [ $# -eq 1 ] || return 1
-    mkdir -m 700 -p "$1"
-    cd "$1"
-}
-
 # ENVIRONMENT
 
 #export EDITOR='emacs -nw' # Or anything else
 export EDITOR='vim'
-export NAME='NOM Prenom'
-export FULLNAME='NOM Prenom'
-export EMAIL='login_x@yaka.epita.fr'
+export NAME='Berenguer Christophe'
+export FULLNAME='Berenguer Christophe'
+export EMAIL='bereng_c@yaka.epita.fr'
 export REPLYTO=$EMAIL
 #export MALLOC_OPTIONS=J # Mandatory
 export CONFIG_SITE=path_to_the_config_site
 
-export KANETON_USER="de-sai_k"
-export KANETON_HOST="linux/ia32"
-export KANETON_PLATFORM="ibm-pc"
-export KANETON_ARCHITECTURE="ia32/educational"
-export KANETON_PYTHON="/usr/bin/python"
 # XSET
 
 {
@@ -236,15 +208,6 @@ xset -b
 xset b off # Better without beep
 xset r rate 300 100 # Shell cursor speed
 } 2> /dev/null
-
-# LOCALS
-
-local=~/".zshrc.local"
-[ -r "$local" ] && source "$local"
-true
-
-setprompt
-
 # EXPORT
 
 export CLICOLOR=xterm-color
@@ -264,14 +227,9 @@ alias l='ls -l'
 alias la='ls -la'
 alias rm='rm -i'
 alias rmf='rm -rf'
-alias e='emacs -nw'
 
 # PERSO
 [[ $EMACS = t ]] && export LS_OPTIONS='-Fh'
-
-# BYE
-
-alias bye="kill -9 -1"
 
 # Source the conf file
 alias reload="source ~/.zshrc"
