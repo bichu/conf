@@ -201,6 +201,14 @@ export REPLYTO=$EMAIL
 #export MALLOC_OPTIONS=J # Mandatory
 export CONFIG_SITE=path_to_the_config_site
 
+# LOCALS
+
+local=~/".zshrc.local"
+[ -r "$local" ] && source "$local"
+true
+
+setprompt
+
 # XSET
 
 {
